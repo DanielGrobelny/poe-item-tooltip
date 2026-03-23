@@ -1,0 +1,302 @@
+/* Base tooltip container */
+.tooltip {
+  background: rgba(12, 12, 14, 0.95);
+  border: 1px solid #5a5a3c;
+  min-width: 300px;
+  max-width: 450px;
+  font-family: "FontinSmallCaps", "Fontin SmallCaps", "Fontin-SmallCaps", "Palatino Linotype", Palatino, serif;
+  font-size: 14px;
+  color: #c8c8c8;
+  display: inline-block;
+  position: relative;
+}
+
+/* HEADER SECTION */
+.header {
+  padding: 8px 16px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.rarity_normal .header,
+.header.rarity_normal {
+  background: linear-gradient(180deg, #303030 0%, #1a1a1a 100%);
+}
+.rarity_magic .header,
+.header.rarity_magic {
+  background: linear-gradient(180deg, #21007f 0%, #0c0033 100%);
+}
+.rarity_rare .header,
+.header.rarity_rare {
+  background: linear-gradient(180deg, #4c4400 0%, #262200 100%);
+}
+.rarity_unique .header,
+.header.rarity_unique {
+  background: linear-gradient(180deg, #362105 0%, #1a1003 100%);
+}
+.rarity_gem .header,
+.header.rarity_gem {
+  background: linear-gradient(180deg, #0a3a39 0%, #051e1d 100%);
+}
+.rarity_currency .header,
+.header.rarity_currency {
+  background: linear-gradient(180deg, #2b2612 0%, #161309 100%);
+}
+
+/* Item name (top line for rares/uniques) */
+.item_name {
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+/* Base type */
+.item_base {
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.item_base_sub {
+  font-size: 16px;
+}
+
+/* Rarity colors for text */
+.rarity_normal .item_name,
+.rarity_normal .item_base,
+.item_name.rarity_normal,
+.item_base.rarity_normal {
+  color: #c8c8c8;
+}
+.rarity_magic .item_name,
+.rarity_magic .item_base,
+.item_name.rarity_magic,
+.item_base.rarity_magic {
+  color: #8888ff;
+}
+.rarity_rare .item_name,
+.rarity_rare .item_base,
+.item_name.rarity_rare,
+.item_base.rarity_rare {
+  color: #ffff77;
+}
+.rarity_unique .item_name,
+.rarity_unique .item_base,
+.item_name.rarity_unique,
+.item_base.rarity_unique {
+  color: #af6025;
+}
+.rarity_gem .item_name,
+.rarity_gem .item_base,
+.item_name.rarity_gem,
+.item_base.rarity_gem {
+  color: #1ba29b;
+}
+.rarity_currency .item_name,
+.rarity_currency .item_base,
+.item_name.rarity_currency,
+.item_base.rarity_currency {
+  color: #aa9e82;
+}
+
+/* SEPARATOR */
+.separator {
+  border: none;
+  height: 1px;
+  margin: 2px 0;
+  background: linear-gradient(90deg, transparent 0%, #5a5a3c 20%, #8a8a5c 50%, #5a5a3c 80%, transparent 100%);
+}
+
+/* PROPERTY LINES */
+.property_line {
+  padding: 1px 12px;
+  color: #c8c8c8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.property_name {
+  color: #7f7f7f;
+}
+
+.property_value {
+  color: #c8c8c8;
+}
+
+/* Augmented (quality-enhanced) values */
+.augmented {
+  color: #8888ff;
+}
+
+/* MODS */
+.mod_explicit,
+.mod_implicit {
+  padding: 1px 12px;
+  color: #8888ff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mod_crafted {
+  padding: 1px 12px;
+  color: #b4b4ff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mod_enchant {
+  padding: 1px 12px;
+  color: #b4b4ff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* DAMAGE COLORS */
+.elemental_fire {
+  color: #960000;
+}
+
+.elemental_cold {
+  color: #366492;
+}
+
+.elemental_lightning {
+  color: #ffd700;
+}
+
+.chaos {
+  color: #d02090;
+}
+
+.separator_inline {
+  color: #c8c8c8;
+}
+
+/* FLAVOUR TEXT */
+.flavour_text {
+  padding: 3px 12px;
+  color: #af6025;
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* CORRUPTED */
+.corrupted {
+  padding: 2px 12px 4px;
+  color: #d20000;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* UNMET REQUIREMENTS */
+.unmet {
+  color: #d20000;
+}
+
+/* SOCKETS */
+.sockets_container {
+  padding: 4px 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.socket_group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+.socket {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.socket_R {
+  background: radial-gradient(circle at 35% 35%, #ff6666, #960000);
+  box-shadow: 0 0 4px #ff0000;
+}
+
+.socket_G {
+  background: radial-gradient(circle at 35% 35%, #66ff66, #006600);
+  box-shadow: 0 0 4px #00ff00;
+}
+
+.socket_B {
+  background: radial-gradient(circle at 35% 35%, #6666ff, #000066);
+  box-shadow: 0 0 4px #0000ff;
+}
+
+.socket_W {
+  background: radial-gradient(circle at 35% 35%, #ffffff, #aaaaaa);
+  box-shadow: 0 0 4px #ffffff;
+}
+
+.socket_A {
+  background: radial-gradient(circle at 35% 35%, #ccaa77, #664422);
+  box-shadow: 0 0 4px #cc8844;
+}
+
+.socket_link {
+  display: inline-block;
+  width: 8px;
+  height: 4px;
+  background: linear-gradient(90deg, #8a8a5c, #c8b87c, #8a8a5c);
+  margin: 0 1px;
+}
+
+/* INFLUENCES */
+.influences {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.influence {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.influence_shaper {
+  background: #5a7ab5;
+  box-shadow: 0 0 4px #3a5a95;
+}
+
+.influence_elder {
+  background: #8b6fae;
+  box-shadow: 0 0 4px #6b4f8e;
+}
+
+.influence_crusader {
+  background: #c8a040;
+  box-shadow: 0 0 4px #a88020;
+}
+
+.influence_hunter {
+  background: #5a9a5a;
+  box-shadow: 0 0 4px #3a7a3a;
+}
+
+.influence_redeemer {
+  background: #c87890;
+  box-shadow: 0 0 4px #a85870;
+}
+
+.influence_warlord {
+  background: #c86030;
+  box-shadow: 0 0 4px #a84010;
+}
