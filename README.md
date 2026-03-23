@@ -2,6 +2,8 @@
 
 React component library for rendering Path of Exile item tooltips, pixel-perfect to the in-game style.
 
+**[Live Demo](https://danielgrobelny.github.io/poe-item-tooltip/)**
+
 ## Installation
 
 ```bash
