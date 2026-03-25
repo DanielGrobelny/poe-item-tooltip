@@ -39,13 +39,10 @@ export function PoeItemTooltip({ item, unmetRequirements = [] }: Props) {
       item.requirements.int !== undefined)
 
   const hasSockets = item.sockets !== undefined && item.sockets.length > 0
-
   const hasImplicit = item.implicitMods && item.implicitMods.length > 0
   const hasExplicit = item.explicitMods && item.explicitMods.length > 0
   const hasCrafted = item.craftedMods && item.craftedMods.length > 0
   const hasEnchant = item.enchantMods && item.enchantMods.length > 0
-  const hasFlavour = item.flavourText !== undefined
-  const hasCorrupted = item.corrupted === true
 
   function renderElementalDamage() {
     if (!item.elementalDamage) return null
@@ -85,6 +82,218 @@ export function PoeItemTooltip({ item, unmetRequirements = [] }: Props) {
     )
   }
 
+  // Build sections array — separators are inserted between sections automatically.
+  // The first separator (header → first section) uses header_separator style.
+  const sections: React.ReactNode[] = []
+
+  if (item.itemLevel !== undefined) {
+    sections.push(
+      <div key="itemlevel" className={styles.property_line}>
+        <span className={styles.property_name}>Item Level: </span>
+        <span className={styles.property_value}>{item.itemLevel}</span>
+      </div>
+    )
+  }
+
+  if (hasProperties) {
+    sections.push(
+      <React.Fragment key="props">
+        {item.quality !== undefined && (
+          <div className={styles.property_line}>
+            <span className={styles.property_name}>Quality: </span>
+            <span className={styles.augmented}>+{item.quality}%</span>
+          </div>
+        )}
+        {item.gemLevel !== undefined && (
+          <div className={styles.property_line}>
+            <span className={styles.property_name}>Level: </span>
+            <span className={styles.property_value}>{item.gemLevel}</span>
+          </div>
+        )}
+        {item.stackSize !== undefined && (
+          <div className={styles.property_line}>
+            <span className={styles.property_name}>Stack Size: </span>
+            <span className={styles.property_value}>
+              {item.stackSize.current}/{item.stackSize.max}
+            </span>
+          </div>
+        )}
+        {item.gemExperience !== undefined && (
+          <div className={styles.property_line}>
+            <span className={styles.property_name}>Experience: </span>
+            <span className={styles.property_value}>{item.gemExperience}</span>
+          </div>
+        )}
+        {hasDefences && (
+          <>
+            {item.armour !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Armour: </span>
+                <span className={item.quality ? styles.augmented : styles.property_value}>
+                  {item.armour}
+                </span>
+              </div>
+            )}
+            {item.evasion !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Evasion Rating: </span>
+                <span className={item.quality ? styles.augmented : styles.property_value}>
+                  {item.evasion}
+                </span>
+              </div>
+            )}
+            {item.energyShield !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Energy Shield: </span>
+                <span className={item.quality ? styles.augmented : styles.property_value}>
+                  {item.energyShield}
+                </span>
+              </div>
+            )}
+          </>
+        )}
+        {hasWeaponStats && (
+          <>
+            {item.physicalDamage !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Physical Damage: </span>
+                <span className={item.quality ? styles.augmented : styles.property_value}>
+                  {item.physicalDamage}
+                </span>
+              </div>
+            )}
+            {item.elementalDamage && item.elementalDamage.length > 0 && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Elemental Damage: </span>
+                {renderElementalDamage()}
+              </div>
+            )}
+            {item.chaosDamage !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Chaos Damage: </span>
+                <span className={styles.chaos}>{item.chaosDamage}</span>
+              </div>
+            )}
+            {item.critChance !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Critical Strike Chance: </span>
+                <span className={styles.property_value}>{item.critChance}%</span>
+              </div>
+            )}
+            {item.attacksPerSecond !== undefined && (
+              <div className={styles.property_line}>
+                <span className={styles.property_name}>Attacks per Second: </span>
+                <span className={styles.property_value}>{item.attacksPerSecond}</span>
+              </div>
+            )}
+          </>
+        )}
+      </React.Fragment>
+    )
+  }
+
+  if (hasRequirements) {
+    sections.push(
+      <div key="req" className={styles.property_line}>
+        <span className={styles.property_name}>Requires </span>
+        {item.requirements?.level !== undefined && (
+          <span
+            className={
+              unmetRequirements.includes("level") ? styles.unmet : styles.property_value
+            }
+          >
+            Level {item.requirements.level}
+            {(item.requirements.str !== undefined ||
+              item.requirements.dex !== undefined ||
+              item.requirements.int !== undefined) && ", "}
+          </span>
+        )}
+        {item.requirements?.str !== undefined && (
+          <span
+            className={
+              unmetRequirements.includes("str") ? styles.unmet : styles.property_value
+            }
+          >
+            <span className={styles.property_name}>Str </span>
+            {item.requirements.str}
+            {(item.requirements.dex !== undefined || item.requirements.int !== undefined) &&
+              ", "}
+          </span>
+        )}
+        {item.requirements?.dex !== undefined && (
+          <span
+            className={
+              unmetRequirements.includes("dex") ? styles.unmet : styles.property_value
+            }
+          >
+            <span className={styles.property_name}>Dex </span>
+            {item.requirements.dex}
+            {item.requirements.int !== undefined && ", "}
+          </span>
+        )}
+        {item.requirements?.int !== undefined && (
+          <span
+            className={
+              unmetRequirements.includes("int") ? styles.unmet : styles.property_value
+            }
+          >
+            <span className={styles.property_name}>Int </span>
+            {item.requirements.int}
+          </span>
+        )}
+      </div>
+    )
+  }
+
+  if (hasSockets) {
+    sections.push(<React.Fragment key="sockets">{renderSockets()}</React.Fragment>)
+  }
+
+  if (hasEnchant) {
+    sections.push(
+      <React.Fragment key="enchant">
+        {item.enchantMods!.map((mod, i) => (
+          <div key={i} className={styles.mod_enchant}>{mod}</div>
+        ))}
+      </React.Fragment>
+    )
+  }
+
+  if (hasImplicit) {
+    sections.push(
+      <React.Fragment key="implicit">
+        {item.implicitMods!.map((mod, i) => (
+          <div key={i} className={styles.mod_implicit}>{mod}</div>
+        ))}
+      </React.Fragment>
+    )
+  }
+
+  if (hasExplicit || hasCrafted) {
+    sections.push(
+      <React.Fragment key="explicit">
+        {item.explicitMods?.map((mod, i) => (
+          <div key={i} className={styles.mod_explicit}>{mod}</div>
+        ))}
+        {item.craftedMods?.map((mod, i) => (
+          <div key={i} className={styles.mod_crafted}>{mod}</div>
+        ))}
+      </React.Fragment>
+    )
+  }
+
+  if (item.flavourText !== undefined) {
+    sections.push(
+      <div key="flavour" className={styles.flavour_text}>{item.flavourText}</div>
+    )
+  }
+
+  if (item.corrupted === true) {
+    sections.push(
+      <div key="corrupted" className={styles.corrupted}>Corrupted</div>
+    )
+  }
+
   return (
     <div className={`${styles.tooltip} ${rarityClass}`}>
       {/* HEADER */}
@@ -92,245 +301,37 @@ export function PoeItemTooltip({ item, unmetRequirements = [] }: Props) {
         {item.influences && item.influences.length > 0 && (
           <div className={styles.influences}>
             {item.influences.map((inf) => (
-              <span key={inf} className={`${styles.influence} ${styles[`influence_${inf}`]}`} title={inf} />
+              <span
+                key={inf}
+                className={`${styles.influence} ${styles[`influence_${inf}`]}`}
+                title={inf}
+              />
             ))}
           </div>
         )}
         {item.name && (
           <div className={`${styles.item_name} ${rarityClass}`}>{item.name}</div>
         )}
-        <div className={`${styles.item_base} ${item.name ? styles.item_base_sub : ""} ${rarityClass}`}>
+        <div
+          className={`${styles.item_base} ${item.name ? styles.item_base_sub : ""} ${rarityClass}`}
+        >
           {item.base}
         </div>
       </div>
 
-      {/* ITEM LEVEL */}
-      {item.itemLevel !== undefined && (
-        <>
-          <hr className={styles.separator} />
-          <div className={styles.property_line}>
-            <span className={styles.property_name}>Item Level: </span>
-            <span className={styles.property_value}>{item.itemLevel}</span>
-          </div>
-        </>
-      )}
+      {/* Render sections with separators injected between them.
+          The very first separator (header → first section) uses the
+          rarity-colored header_separator; all subsequent ones use the
+          neutral golden separator. */}
+      {sections.map((section, i) => (
+        <React.Fragment key={i}>
+          <hr className={i === 0 ? styles.header_separator : styles.separator} />
+          {section}
+        </React.Fragment>
+      ))}
 
-      {/* PROPERTIES */}
-      {hasProperties && (
-        <>
-          <hr className={styles.separator} />
-          {item.quality !== undefined && (
-            <div className={styles.property_line}>
-              <span className={styles.property_name}>Quality: </span>
-              <span className={styles.augmented}>+{item.quality}%</span>
-            </div>
-          )}
-          {item.gemLevel !== undefined && (
-            <div className={styles.property_line}>
-              <span className={styles.property_name}>Level: </span>
-              <span className={styles.property_value}>{item.gemLevel}</span>
-            </div>
-          )}
-          {item.stackSize !== undefined && (
-            <div className={styles.property_line}>
-              <span className={styles.property_name}>Stack Size: </span>
-              <span className={styles.property_value}>
-                {item.stackSize.current}/{item.stackSize.max}
-              </span>
-            </div>
-          )}
-          {item.gemExperience !== undefined && (
-            <div className={styles.property_line}>
-              <span className={styles.property_name}>Experience: </span>
-              <span className={styles.property_value}>{item.gemExperience}</span>
-            </div>
-          )}
-          {hasDefences && (
-            <>
-              {item.armour !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Armour: </span>
-                  <span className={item.quality ? styles.augmented : styles.property_value}>
-                    {item.armour}
-                  </span>
-                </div>
-              )}
-              {item.evasion !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Evasion Rating: </span>
-                  <span className={item.quality ? styles.augmented : styles.property_value}>
-                    {item.evasion}
-                  </span>
-                </div>
-              )}
-              {item.energyShield !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Energy Shield: </span>
-                  <span className={item.quality ? styles.augmented : styles.property_value}>
-                    {item.energyShield}
-                  </span>
-                </div>
-              )}
-            </>
-          )}
-          {hasWeaponStats && (
-            <>
-              {item.physicalDamage !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Physical Damage: </span>
-                  <span className={item.quality ? styles.augmented : styles.property_value}>
-                    {item.physicalDamage}
-                  </span>
-                </div>
-              )}
-              {item.elementalDamage && item.elementalDamage.length > 0 && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Elemental Damage: </span>
-                  {renderElementalDamage()}
-                </div>
-              )}
-              {item.chaosDamage !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Chaos Damage: </span>
-                  <span className={styles.chaos}>{item.chaosDamage}</span>
-                </div>
-              )}
-              {item.critChance !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Critical Strike Chance: </span>
-                  <span className={styles.property_value}>{item.critChance}%</span>
-                </div>
-              )}
-              {item.attacksPerSecond !== undefined && (
-                <div className={styles.property_line}>
-                  <span className={styles.property_name}>Attacks per Second: </span>
-                  <span className={styles.property_value}>{item.attacksPerSecond}</span>
-                </div>
-              )}
-            </>
-          )}
-        </>
-      )}
-
-      {/* REQUIREMENTS */}
-      {hasRequirements && (
-        <>
-          <hr className={styles.separator} />
-          <div className={styles.property_line}>
-            <span className={styles.property_name}>Requires </span>
-            {item.requirements?.level !== undefined && (
-              <span
-                className={
-                  unmetRequirements.includes("level")
-                    ? styles.unmet
-                    : styles.property_value
-                }
-              >
-                Level {item.requirements.level}
-                {(item.requirements.str !== undefined ||
-                  item.requirements.dex !== undefined ||
-                  item.requirements.int !== undefined) && ", "}
-              </span>
-            )}
-            {item.requirements?.str !== undefined && (
-              <span
-                className={
-                  unmetRequirements.includes("str")
-                    ? styles.unmet
-                    : styles.property_value
-                }
-              >
-                <span className={styles.property_name}>Str </span>
-                {item.requirements.str}
-                {(item.requirements.dex !== undefined ||
-                  item.requirements.int !== undefined) && ", "}
-              </span>
-            )}
-            {item.requirements?.dex !== undefined && (
-              <span
-                className={
-                  unmetRequirements.includes("dex")
-                    ? styles.unmet
-                    : styles.property_value
-                }
-              >
-                <span className={styles.property_name}>Dex </span>
-                {item.requirements.dex}
-                {item.requirements.int !== undefined && ", "}
-              </span>
-            )}
-            {item.requirements?.int !== undefined && (
-              <span
-                className={
-                  unmetRequirements.includes("int")
-                    ? styles.unmet
-                    : styles.property_value
-                }
-              >
-                <span className={styles.property_name}>Int </span>
-                {item.requirements.int}
-              </span>
-            )}
-          </div>
-        </>
-      )}
-
-      {/* SOCKETS */}
-      {hasSockets && (
-        <>
-          <hr className={styles.separator} />
-          {renderSockets()}
-        </>
-      )}
-
-      {/* ENCHANT MODS */}
-      {hasEnchant && (
-        <>
-          <hr className={styles.separator} />
-          {item.enchantMods!.map((mod, i) => (
-            <div key={i} className={styles.mod_enchant}>{mod}</div>
-          ))}
-        </>
-      )}
-
-      {/* IMPLICIT MODS */}
-      {hasImplicit && (
-        <>
-          <hr className={styles.separator} />
-          {item.implicitMods!.map((mod, i) => (
-            <div key={i} className={styles.mod_implicit}>{mod}</div>
-          ))}
-        </>
-      )}
-
-      {/* EXPLICIT + CRAFTED MODS */}
-      {(hasExplicit || hasCrafted) && (
-        <>
-          <hr className={styles.separator} />
-          {item.explicitMods?.map((mod, i) => (
-            <div key={i} className={styles.mod_explicit}>{mod}</div>
-          ))}
-          {item.craftedMods?.map((mod, i) => (
-            <div key={i} className={styles.mod_crafted}>{mod}</div>
-          ))}
-        </>
-      )}
-
-      {/* FLAVOUR TEXT */}
-      {hasFlavour && (
-        <>
-          <hr className={styles.separator} />
-          <div className={styles.flavour_text}>{item.flavourText}</div>
-        </>
-      )}
-
-      {/* CORRUPTED */}
-      {hasCorrupted && (
-        <>
-          <hr className={styles.separator} />
-          <div className={styles.corrupted}>Corrupted</div>
-        </>
-      )}
+      {/* Bottom spacer so the last line of text doesn't hug the border */}
+      {sections.length > 0 && <div className={styles.bottom_pad} />}
     </div>
   )
 }
